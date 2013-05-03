@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css"	href="resources/stretchyreporting/stretchyreporting.css">
 <link rel="stylesheet" type="text/css"	href="resources/IndividualLendingCode-0.12.0.beta.css" />
 
+
+
 <!-- JQuery/JQuery UI is used. JQuery data tables are used to display rows of data - especially in reporting (stretchyreporting) -->
 <script type="text/javascript" src="resources/libs/jquery-1.7.min.js"></script>
 <script type="text/javascript"	src="resources/libs/jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -94,7 +96,6 @@ $(document).ready(function() {
 	
 });
 </script>
-
 
 
 <!-- Everything below here is just templates for jsrender to process in order to display the various pages -->
@@ -345,7 +346,7 @@ $(document).ready(function() {
 		</div>
         <hr/>
 		<div style="height: 80px">
-			<div style="float: left">
+			<div style="float: right">
 					<label for="group">{{=$ctx.doI18N("label.search.by.name")}}</label>
 					<input type="text" maxlength="30" id="searchInput"/>
 					<button id="searchGroupBtn" style="clear: both;" style="height:10px">{{=$ctx.doI18N("button.search")}}</button>
@@ -454,8 +455,8 @@ $(document).ready(function() {
 				<th>{{=$ctx.doI18N("table.heading.client.accountNo")}}</th>
 				<th>{{=$ctx.doI18N("table.heading.displayname")}}</th>
 			</tr>
-		</thead>
 		<tbody>
+		</thead>
 			{{#each crudRows}}
 			<tr>
 				<td>{{=officeName}}</td>
@@ -2565,8 +2566,6 @@ $(document).ready(function() {
 		<legend>{{=$ctx.doI18N("form.legend.charge.details")}}</legend>
 		<label for="name">{{=$ctx.doI18N("label.name")}}</label>
 		<input id="name" name="name" title="" type="text" value="{{=name}}" size="25"/>
-		<label for="amount">{{=$ctx.doI18N("label.amount")}}</label>
-		<input id="amount" name="amount" title="" type="text" value="{{=$ctx.decimal(amount, 2)}}" size="25"/>
 		<label for="currencyCode">{{=$ctx.doI18N("label.currency")}}</label>
 		<select id="currencyCode" name="currencyCode" title="" style="width: 300px;">
         	<option value="">{{=$ctx.doI18N("option.currency.first.choice")}}</option>
@@ -2618,13 +2617,14 @@ $(document).ready(function() {
 				{{/each}}
 			{{/if}}
 		</select>
-		<label for="chargeCalculationType">{{=$ctx.doI18N("form.label.charge.calculation.type")}}</label>
-		<select id="chargeCalculationType" name="chargeCalculationType" title="" style="width: 300px">
+        <label for="chargeCalculationType">{{=$ctx.doI18N("form.label.charge.calculation.type")}}</label>
+    		<select id="chargeCalculationType" name="chargeCalculationType" title="" style="width: 300px">
 			<option value="">{{=$ctx.doI18N("form.option.select.one")}}</option>
 			{{#if chargeCalculationType}}
 				{{#each chargeCalculationTypeOptions}}
 	              	{{#if $ctx.number($parent.parent.data.chargeCalculationType.id)===$ctx.number(id)}}
 						<option value="{{=$ctx.number(id)}}" selected="selected">{{=$ctx.doI18N(code)}}</option>
+                        
 					{{#else}}
 						<option value="{{=$ctx.number(id)}}">{{=$ctx.doI18N(code)}}</option>
 					{{/if}}
@@ -2635,7 +2635,11 @@ $(document).ready(function() {
 				{{/each}}
 			{{/if}}
 		</select>
-		<label for="active">{{=$ctx.doI18N("label.active")}}</label>
+		
+        <label for="amount">{{=$ctx.doI18N("label.amount")}}</label>
+        <input id="amount" name="amount" title="" type="text" value="{{=$ctx.decimal(amount, 2)}}" size="25"/>
+         
+        <label for="active">{{=$ctx.doI18N("label.active")}}</label>
 		{{#if active}}
 			<input type="checkbox" id="active" name="active" title="" style="width: 125px;" checked=checked />
 		{{#else}}
@@ -2651,6 +2655,8 @@ $(document).ready(function() {
 	</fieldset>
 </form>
 </script>
+
+
 
 <script id="orgCurrencyFormTemplate" type="text/x-jquery-tmpl">
 <form id="entityform">
@@ -4035,9 +4041,10 @@ $(document).ready(function() {
 				<th>{{=$ctx.doI18N("table.heading.createdBy")}}</th>
 				<th>{{=$ctx.doI18N("table.heading.entryId")}}</th>
 				<th>{{=$ctx.doI18N("table.heading.transactionId")}}</th>
-				<th>{{=$ctx.doI18N("table.heading.credit")}}</th>
+				<th>{{=$ctx.doI18N("table.heading.referenceNumber")}}</th>
+                <th>{{=$ctx.doI18N("table.heading.credit")}}</th>
 				<th>{{=$ctx.doI18N("table.heading.debit")}}</th>
-				<th></th>
+                <th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -4051,6 +4058,8 @@ $(document).ready(function() {
 				<td>{{=createdByUserName}}</td>
 				<td>{{=id}}</td>
 				<td>{{=transactionId}}</td>
+                <td>{{=referenceNumber}}</td>
+                
 				<td>
 					{{#if entryType.value == "CREDIT"}}
 						{{=$ctx.decimal(amount, 2)}}
@@ -4111,6 +4120,10 @@ $(document).ready(function() {
 		<td>{{=$ctx.doI18N("label.transactionType")}}</td>
 		<td>{{=entryType.value}}</td>
 	</tr>
+    <tr>
+        <td>{{=$ctx.doI18N("label.referenceNumber")}}</td>
+        <td>{{=entryType.value}}</td>
+    </tr>
 	<tr>
 		<td>{{=$ctx.doI18N("label.createdBy")}}</td>
 		<td>{{=createdByUserName}}</td>
@@ -4186,6 +4199,12 @@ $(document).ready(function() {
 			<input id="transactionDate" name="transactionDate" title="" type="text" class="datepickerfield" />
 			</td>
 		</tr>
+        <tr>
+            <td><label for="referenceNumber">{{=$ctx.doI18N("label.referenceNumber")}}</label></td>
+            <td>
+            <input type="text" id="referenceNumber" size="20" name="referenceNumber" value="" placeholder="Input Reference Number" />
+            </td>
+        </tr>
 		<tr>
 			<td><label for="comments">{{=$ctx.doI18N("label.comments")}}</label></td>
 			<td><textarea id="comments" name="comments" rows="5" cols="45">{{=comments}}</textarea></td>
@@ -6505,6 +6524,8 @@ $(document).ready(function() {
 {{/if}}
 <!-- charges -->
 
+  
+
 		<!-- accounting -->
 {{#if $ctx.showTask("VIEWJOURNALENTRIES")}}
 		<div id="accounting" style="margin-top: 5px;">
@@ -6531,7 +6552,7 @@ $(document).ready(function() {
 				</td>
 				</tr>
 			</table>
-		
+
 			<div style="padding-left: 20%" id="accountingPlaceholdersDiv">
 			<fieldset style="width: 80%;border-top: 1px dotted">
 					<legend>{{=$ctx.doI18N("legend.assets")}}</legend>	
@@ -6633,13 +6654,13 @@ $(document).ready(function() {
 						</tr>
 				</table>
 			</fieldset>
-			<fieldset style="width: 80%;border-top: 1px dotted">
+        	<fieldset style="width: 80%;border-top: 1px dotted">
 					<legend>{{=$ctx.doI18N("legend.income")}}</legend>	
 				<table style="width:100%">
 						<tr>
 							<td>{{=$ctx.doI18N("label.incomeFromInterest")}}</td>
 							<td>
-								<select id="interestOnLoanAccountId" name="interestOnLoanAccountId" title="" >
+								<select id="interestOnLoanAccountId" name="interestOnLoanAccountId" title="">
 									<option value="">{{=$ctx.doI18N("option.glAccount.first.choice")}}</option>
 									{{#each accountingMappingOptions.incomeAccountOptions}}
 									    {{#if $parent.parent.data.accountingMappings}}
@@ -6729,7 +6750,6 @@ $(document).ready(function() {
 	</div>
 </form>
 </script>
-
 <script id="loanProductAddChargeRowTemplate" type="text/x-jquery-tmpl">
 <tr>
 	<input id="charges[{{=index}}][id]" name="charges[{{=index}}][id]" class="id" title="" type="hidden" value="{{=$ctx.number(id)}}" />
@@ -8295,9 +8315,9 @@ $(document).ready(function() {
         <hr/>
         <div style="height: 80px">
             <div style="float: left">
-                    <label for="center">{{=$ctx.doI18N("label.search.by.name")}}</label>
+                    <label for="right">{{=$ctx.doI18N("label.search.by.name")}}</label>
                     <input type="text" maxlength="30" id="searchInput"/>
-                    <button id="searchCenterBtn" style="clear: both;" style="height:10px">{{=$ctx.doI18N("button.search")}}</button>
+                    <button id="searchCenterBtn" style="clear: both;" style="height:8px">{{=$ctx.doI18N("button.search")}}</button>
             </div>
             
             <div style="float: right">
@@ -8582,6 +8602,7 @@ $(document).ready(function() {
    	</tbody>
 </table>    
 </script>
+
 <!-- end of centers api -->
 
 </body>

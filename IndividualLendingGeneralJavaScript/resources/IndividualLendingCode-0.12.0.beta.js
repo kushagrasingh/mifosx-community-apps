@@ -251,7 +251,7 @@ function showMainContainer(containerDivName, username) {
 	htmlVar += '	<li><a href="unknown.html" onclick="return false;">' + doI18N("label.tenant.name") + ': ' + tenantIdentifier + '</a></li>';
     htmlVar += '    <li id="search_element" class="sb_wrapper">';
 
-    htmlVar += '           <input id="sb_input" name="sb_input" class="sb_input" type="text" placeholder="Search" />';
+    htmlVar += '           <input id="sb_input" name="sb_input" class="sb_input" float:right type="text" placeholder="Search" />';
     htmlVar += '           <button type="submit" class="globalsearchbtn ui-icon-search" id="globalsearchbtn" name="globalsearchbtn" title="Global Search">Search</button>';
     htmlVar += '           <ul class="sb_dropdown" >';
     htmlVar += '                <li class="sb_filter">Filter your search</li>';
@@ -658,6 +658,8 @@ function setAccountingContent(divName) {
 	executeAjaxRequest('offices', 'GET', "", getOfficesSuccessFunction, formErrorFunction);
 }
 
+
+
 function handleJournalEntriesTabSelection(officesObject) {
 	// get list of all offices and accounts and initialize the screen
 	var getAccountsSuccessFunction = function(data, textStatus, jqXHR) {
@@ -682,6 +684,7 @@ function handleJournalEntriesTabSelection(officesObject) {
 			var getUrl = "";
 			var putUrl = "journalentries";
 			var templateSelector = "#journalEntryFormTemplate";
+			// added refNumber in the template.
 			var width = 600;
 			var height = 500;
 
@@ -854,6 +857,7 @@ function handleJournalEntriesTabSelection(officesObject) {
 		}
 	}
 }
+
 
 function handleGLClosuresTabSelection(officesObject) {
 	var baseObject = new Object();
@@ -5584,7 +5588,9 @@ function popupDialogWithFormViewData(data, postUrl, submitType, titleCode, templ
     	   	serializedArray["dateFormat"] = $('#dateFormat').val();
     	   	serializedArray["officeId"] = $('#officeId').val();
     	   	serializedArray["transactionDate"] = $('#transactionDate').val();
-    	   	serializedArray["comments"] = $('#comments').val();	
+    	   	serializedArray["comments"] = $('#comments').val();
+    	   	// added refernceNumber to serialized array for journal entries
+    	   	serializedArray["referenceNumber"] = $('#referenceNumber').val();	
     	   	//populate debits and credits array
     	   	var populateCreditOrDebitArray = function(type){
     	   		serializedArray[type] = new Array();
